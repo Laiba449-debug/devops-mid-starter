@@ -1,0 +1,29 @@
+
+services:
+  api:
+    image: laibajamil/mid-svc:55132
+    ports:
+      - "9032:5000"
+    environment:
+      STUDENT: "55132"
+      REDIS_HOST: store
+    networks:
+      - backend-55132
+    depends_on:
+      - store
+
+  store:
+    image: redis:alpine
+    command: ["redis-server", "--appendonly", "yes", "--dir", "/data"]
+    volumes:
+      - store-55132:/data
+    networks:
+      - backend-55132
+
+networks:
+  backend-55132:
+    name: backend-55132
+
+volumes:
+  store-55132:
+    name: store-55132
